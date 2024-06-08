@@ -1,0 +1,27 @@
+.orders-table-container {
+  overflow: auto;
+}
+
+#the-orders-table {
+  background-color: white;
+}
+
+#the-orders-table tr th {
+  white-space: nowrap;
+}
+
+#the-orders-table td {
+  white-space: nowrap;
+}
+
+.sort-icons:hover {
+  cursor: pointer;
+}
+
+.order-filter-inputs {
+  margin-top: 10px;
+}
+
+.date-input-labels {
+  margin-top: 10px;
+}
