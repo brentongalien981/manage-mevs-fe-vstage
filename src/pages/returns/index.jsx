@@ -1,11 +1,14 @@
 import React from "react";
+import AuthGuard from "../../components/guards/AuthGuard";
 
 const Returns = () => {
   return (
-    <div>
-      <h2>Returns</h2>
-      <p>Welcome Returns baby!</p>
-    </div>
+    <AuthGuard>
+      <div>
+        <h2>Returns</h2>
+        <p>Welcome Returns baby!</p>
+      </div>
+    </AuthGuard>
   );
 };
 

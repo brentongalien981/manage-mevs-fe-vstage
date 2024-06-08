@@ -12,6 +12,7 @@ import ThemeProvider from "./contexts/ThemeProvider";
 import SidebarProvider from "./contexts/SidebarProvider";
 import LayoutProvider from "./contexts/LayoutProvider";
 import ChartJsDefaults from "./utils/ChartJsDefaults";
+import AuthProvider from "./contexts/AuthProvider";
 
 const App = () => {
   const content = useRoutes(routes);
@@ -27,8 +28,10 @@ const App = () => {
           <ThemeProvider>
             <SidebarProvider>
               <LayoutProvider>
-                <ChartJsDefaults />
-                {content}
+                <AuthProvider>
+                  <ChartJsDefaults />
+                  {content}
+                </AuthProvider>
               </LayoutProvider>
             </SidebarProvider>
           </ThemeProvider>

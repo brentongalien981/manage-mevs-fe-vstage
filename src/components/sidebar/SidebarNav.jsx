@@ -1,5 +1,5 @@
 import React from "react";
-import { ShoppingBag, TrendingUp, Truck } from "react-feather";
+import { ShoppingBag, TrendingUp, Truck, User } from "react-feather";
 import { Link } from "react-router-dom";
 
 const SidebarNav = () => {
@@ -15,9 +15,16 @@ const SidebarNav = () => {
           {<ShoppingBag className="feather align-middle" />}Orders
         </Link>
       </li>
+
       <li className="sidebar-item">
         <Link to={`/returns`} className="sidebar-link">
           {<Truck className="feather align-middle" />}Returns
+        </Link>
+      </li>
+
+      <li className="sidebar-item">
+        <Link to={`/signup`} className="sidebar-link">
+          {<User className="feather align-middle" />}Signup
         </Link>
       </li>
     </ul>
