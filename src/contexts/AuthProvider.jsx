@@ -8,6 +8,11 @@ const initialState = {
   username: null,
   token: null,
   profilePhotoSource: null,
+  userCredentials: [
+    { name: "email", type: "email", value: "", placeholder: "Email" },
+    { name: "password", type: "password", value: "", placeholder: "Password" },
+    { name: "signupKey", type: "text", value: "", placeholder: "Signup Key" },
+  ],
 };
 
 const AuthProvider = ({ children }) => {

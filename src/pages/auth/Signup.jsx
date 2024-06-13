@@ -1,8 +1,24 @@
 import { Helmet } from "react-helmet-async";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import GuestGuard from "../../components/guards/GuestGuard";
+import useAuth from "../../hooks/useAuth";
 
 const Signup = () => {
+  const { userCredentials, handleInputChange } = useAuth();
+
+  const formInputs = userCredentials.map((inputData, index) => (
+    <Form.Group className="mb-3" key={index}>
+      <Form.Label>{inputData.placeholder}</Form.Label>
+      <Form.Control
+        type={inputData.type}
+        name={inputData.name}
+        placeholder={inputData.placeholder}
+        value={inputData.value}
+        onChange={handleInputChange}
+      />
+    </Form.Group>
+  ));
+
   return (
     <GuestGuard>
       <Helmet title="Sign Up" />
@@ -18,38 +34,7 @@ const Signup = () => {
                 <Card.Body>
                   <div className="m-sm-3">
                     <Form>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          type="email"
-                          name="email"
-                          placeholder="Email"
-                          // value={values.email}
-                          // onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          placeholder="Password"
-                          // value={values.password}
-                          // onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Signup Key</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="signupKey"
-                          placeholder="Signup Key"
-                          // value={}
-                          // onChange={handleChange}
-                        />
-                      </Form.Group>
+                      {formInputs}
 
                       <div className="d-grid gap-2 mt-3">
                         <Button type="submit" variant="primary" size="lg">
