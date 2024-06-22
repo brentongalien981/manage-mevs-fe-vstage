@@ -5,7 +5,7 @@ const GuestGuard = ({ children }) => {
   const { isLoggedIn } = useAuth();
 
   if (isLoggedIn) {
-    return <Navigate to="/notfound" />;
+    return <Navigate to="/daily-summary" />;
   }
 
   return <>{children}</>;

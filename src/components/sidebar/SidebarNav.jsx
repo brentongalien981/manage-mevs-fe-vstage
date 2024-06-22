@@ -1,8 +1,11 @@
 import React from "react";
 import { ShoppingBag, TrendingUp, Truck, User } from "react-feather";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const SidebarNav = () => {
+  const { isLoggedIn } = useAuth();
+
   return (
     <ul className="sidebar-nav">
       <li className="sidebar-item">
@@ -22,11 +25,21 @@ const SidebarNav = () => {
         </Link>
       </li>
 
-      <li className="sidebar-item">
-        <Link to={`/signup`} className="sidebar-link">
-          {<User className="feather align-middle" />}Signup
-        </Link>
-      </li>
+      {!isLoggedIn && (
+        <>
+          <li className="sidebar-item">
+            <Link to={`/signup`} className="sidebar-link">
+              {<User className="feather align-middle" />}Signup
+            </Link>
+          </li>
+
+          <li className="sidebar-item">
+            <Link to={`/login`} className="sidebar-link">
+              {<User className="feather align-middle" />}Login
+            </Link>
+          </li>
+        </>
+      )}
     </ul>
   );
 };

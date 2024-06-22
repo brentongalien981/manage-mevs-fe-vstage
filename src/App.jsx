@@ -13,6 +13,7 @@ import SidebarProvider from "./contexts/SidebarProvider";
 import LayoutProvider from "./contexts/LayoutProvider";
 import ChartJsDefaults from "./utils/ChartJsDefaults";
 import AuthProvider from "./contexts/AuthProvider";
+import FloatingAlertsProvider from "./contexts/FloatingAlertsProvider";
 
 const App = () => {
   const content = useRoutes(routes);
@@ -29,8 +30,10 @@ const App = () => {
             <SidebarProvider>
               <LayoutProvider>
                 <AuthProvider>
-                  <ChartJsDefaults />
-                  {content}
+                  <FloatingAlertsProvider>
+                    <ChartJsDefaults />
+                    {content}
+                  </FloatingAlertsProvider>
                 </AuthProvider>
               </LayoutProvider>
             </SidebarProvider>

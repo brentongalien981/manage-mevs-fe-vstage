@@ -6,6 +6,7 @@ import MyJsonLocalStorage from "../utils/MyJsonLocalStorage";
 const initialState = {
   isLoggedIn: false,
   username: null,
+  email: null,
   token: null,
   profilePhotoSource: null,
   userCredentials: [
@@ -13,6 +14,9 @@ const initialState = {
     { name: "password", type: "password", value: "", placeholder: "Password" },
     { name: "signupKey", type: "text", value: "", placeholder: "Signup Key" },
   ],
+  isProcessing: false,
+  error: null,
+  validationErrors: [],
 };
 
 const AuthProvider = ({ children }) => {
@@ -27,11 +31,13 @@ const AuthProvider = ({ children }) => {
       payload = {
         isLoggedIn: true,
         username: storedAuth.username,
+        email: storedAuth.email,
         token: storedAuth.token,
         profilePhotoSource: storedAuth.profilePhotoSource,
       };
     }
 
+    // Init user auth with empty or stored auth credentials.
     dispatch({
       type: "INITIALIZE",
       payload: payload,

@@ -28,8 +28,18 @@ export async function myFetch({ url, method = "GET", body, onSuccess, onFailure,
       onDefaultSuccess(data);
       onSuccess?.(data);
     } else {
-      const errorMsg = data?.error?.friendlyErrorMessage ?? "";
-      throw new Error(errorMsg);
+
+      // Handle validation errors.
+      if (data.multipleErrorsObj) {
+        onDefaultValidationFailure(data.multipleErrorsObj);
+        onValidationErrors?.(data.multipleErrorsObj);
+      }
+
+      // Handle single error.
+      if (data.error) {
+        const errorMsg = data.error.friendlyErrorMessage ?? "Oops, something went wrong...";
+        throw new Error(errorMsg);
+      }
     }
 
   } catch (e) {
@@ -55,6 +65,14 @@ function getToken() {
 function onDefaultFailure(errorMsg) {
   My.log("Oops, error in METHOD: onDefaultFailure()...");
   My.log(`Error: ${errorMsg}`);
+}
+
+
+function onDefaultValidationFailure(validationError) {
+  My.log("Oops, error in METHOD: onDefaultValidationFailure()...");
+  My.log(`Error: ${validationError.friendlyErrorMessage}`);
+  My.log("Validation Errors:");
+  My.log(validationError.errors);
 }
 
 

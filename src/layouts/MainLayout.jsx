@@ -8,6 +8,7 @@ import Navbar from "../components/navbar/Navbar";
 import Content from "../components/Content";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+import FloatingAlertContainer from "./FloatingAlertContainer";
 
 const MainLayout = ({ children }) => (
   <React.Fragment>
@@ -21,6 +22,7 @@ const MainLayout = ({ children }) => (
             <Outlet />
           </Suspense>
         </Content>
+        <FloatingAlertContainer />
         <Footer />
       </Main>
     </Wrapper>
