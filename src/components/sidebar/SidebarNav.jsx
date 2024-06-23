@@ -9,8 +9,8 @@ const SidebarNav = () => {
   return (
     <ul className="sidebar-nav">
       <li className="sidebar-item">
-        <Link to={`/daily-summary`} className="sidebar-link">
-          {<TrendingUp className="feather align-middle" />}Daily Summary
+        <Link to={`/dashboard`} className="sidebar-link">
+          {<TrendingUp className="feather align-middle" />}Dashboard
         </Link>
       </li>
       <li className="sidebar-item">

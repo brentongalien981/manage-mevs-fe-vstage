@@ -8,7 +8,7 @@ import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
 
-const Default = () => (
+const Dashboard = () => (
   <React.Fragment>
     <Helmet title="Daily Summary" />
     <Container fluid className="p-0">
@@ -29,4 +29,4 @@ const Default = () => (
   </React.Fragment>
 );
 
-export default Default;
+export default Dashboard;
