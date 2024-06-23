@@ -85,7 +85,7 @@ const Signup = () => {
   }
 
   // Show signup key for demo purposes.
-  let signupKeyComp = (
+  let signupKeyHintComp = (
     <Alert>
       <div className="alert-icon">
         <FontAwesomeIcon icon={faLightbulb} fixedWidth />
@@ -100,7 +100,7 @@ const Signup = () => {
       <Helmet title="Sign Up" />
       <Container className="w-100 justify-content-center">
         <Row className="h-100">
-          {signupKeyComp}
+          {signupKeyHintComp}
           {errorComp}
           {validationErrorsComp}
 

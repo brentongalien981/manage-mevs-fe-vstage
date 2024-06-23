@@ -8,7 +8,7 @@ const AuthGuard = ({ children }) => {
     return <>{children}</>;
   }
 
-  return <Navigate to="/signup" />;
+  return <Navigate to="/login" />;
 };
 
 export default AuthGuard;

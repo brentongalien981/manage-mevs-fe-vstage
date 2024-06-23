@@ -11,6 +11,7 @@ const Orders = lazy(() => import("./pages/orders"));
 const Returns = lazy(() => import("./pages/returns"));
 const Page404 = lazy(() => import("./pages/auth/Page404"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
+const Login = lazy(() => import("./pages/auth/Login"));
 
 const routes = [
   {
@@ -22,6 +23,7 @@ const routes = [
       { path: "orders", element: <Orders /> },
       { path: "returns", element: <Returns /> },
       { path: "signup", element: <Signup /> },
+      { path: "login", element: <Login /> },
       { path: "*", element: <Page404 /> },
     ],
   },
