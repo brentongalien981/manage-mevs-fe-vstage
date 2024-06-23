@@ -3,7 +3,7 @@ import AuthContext from "./AuthContext";
 import authReducer from "../reducers/authReducer";
 import MyJsonLocalStorage from "../utils/MyJsonLocalStorage";
 
-const initialState = {
+export const DEFAULT_STATE = {
   isLoggedIn: false,
   username: null,
   email: null,
@@ -18,6 +18,8 @@ const initialState = {
   error: null,
   validationErrors: [],
 };
+
+const initialState = { ...DEFAULT_STATE };
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);

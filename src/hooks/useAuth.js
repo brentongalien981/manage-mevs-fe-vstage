@@ -2,11 +2,13 @@ import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import * as authActions from "../actions/authActions";
 import useFloatingAlerts from "./useFloatingAlerts";
+import { useNavigate } from "react-router-dom";
 
 function useAuth() {
 
   const { state, dispatch } = useContext(AuthContext);
   const { addAlert } = useFloatingAlerts();
+  const navigate = useNavigate();
 
 
   function handleInputChange(event) {
@@ -28,11 +30,17 @@ function useAuth() {
   }
 
 
+  function handleLogout() {
+    authActions.handleLogout(dispatch, addAlert, navigate);
+  }
+
+
   return {
     ...state,
     handleInputChange,
     handleSignup,
-    handleLogin
+    handleLogin,
+    handleLogout
   };
 
 }

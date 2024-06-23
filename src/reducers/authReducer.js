@@ -1,5 +1,4 @@
-import My from "../utils/My";
-import MyJsonLocalStorage from "../utils/MyJsonLocalStorage";
+import { DEFAULT_STATE } from "../contexts/AuthProvider";
 
 function authReducer(state, action) {
   switch (action.type) {
@@ -9,10 +8,29 @@ function authReducer(state, action) {
     case "SIGNUP_FAIL":
     case "LOGIN_FAIL": return { ...state, isProcessing: false, error: action.error, validationErrors: action.validationErrors ?? [] };
     case "SIGNUP_SUCCESS":
-    case "LOGIN_SUCCESS": return { ...state, isLoggedIn: true, email: action.email, token: action.token, isProcessing: false };
+    case "LOGIN_SUCCESS": return onAuthSuccess(state, action);
+    case "LOGOUT": return onLogout(state, action);
     case "HANDLE_INPUT_CHANGE": return onHandleInputChange(state, action);
     default: throw new Error("Unknown action: " + action.type);
   }
+}
+
+
+function onLogout(state, action) {
+  const defaultUserCredentials = DEFAULT_STATE.userCredentials.map((credential) => {
+    return { ...credential, value: "" };
+  });
+
+  return { ...DEFAULT_STATE, userCredentials: defaultUserCredentials };
+}
+
+
+function onAuthSuccess(state, action) {
+  const defaultUserCredentials = DEFAULT_STATE.userCredentials.map((credential) => {
+    return { ...credential, value: "" };
+  });
+
+  return { ...DEFAULT_STATE, userCredentials: defaultUserCredentials, isLoggedIn: true, email: action.email, token: action.token };
 }
 
 

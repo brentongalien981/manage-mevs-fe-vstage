@@ -116,6 +116,24 @@ export async function handleLogin(userCredentials, dispatch, addAlert) {
 }
 
 
+export function handleLogout(dispatch, addAlert, navigate) {
+
+  navigate("/");
+
+  // Set auth to null in localStorage.
+  MyJsonLocalStorage.set("auth", null);
+
+  dispatch({
+    type: "LOGOUT"
+  });
+
+
+  addAlert({
+    message: "See you soon!"
+  });
+}
+
+
 export function handleInputChange(event, dispatch) {
   const inputName = event.target.name;
   const inputValue = event.target.value;
