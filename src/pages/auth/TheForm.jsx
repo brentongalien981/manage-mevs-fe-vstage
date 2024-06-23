@@ -2,8 +2,13 @@ import { Button, Form, Spinner } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 
 const TheForm = ({ pageName }) => {
-  const { userCredentials, handleInputChange, handleSignup, isProcessing } =
-    useAuth();
+  const {
+    userCredentials,
+    handleInputChange,
+    handleSignup,
+    handleLogin,
+    isProcessing,
+  } = useAuth();
 
   const formInputs = userCredentials.map((inputData, index) => {
     // Don't include the signupKey input in the login form.
@@ -32,7 +37,7 @@ const TheForm = ({ pageName }) => {
 
   // Set submit button component for login page.
   if (pageName === "login") {
-    submitHandler = () => {};
+    submitHandler = handleLogin;
     submitBtnLabel = "Login";
   }
 

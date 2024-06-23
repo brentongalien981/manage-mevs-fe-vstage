@@ -20,11 +20,19 @@ function useAuth() {
     authActions.handleSignup(state.userCredentials, dispatch, addAlert);
   }
 
+  function handleLogin() {
+    if (state.isProcessing) {
+      return;
+    }
+    authActions.handleLogin(state.userCredentials, dispatch, addAlert);
+  }
+
 
   return {
     ...state,
     handleInputChange,
-    handleSignup
+    handleSignup,
+    handleLogin
   };
 
 }
