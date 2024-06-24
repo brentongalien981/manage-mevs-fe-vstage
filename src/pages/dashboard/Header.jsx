@@ -14,12 +14,9 @@ const Header = () => {
       </Col>
 
       <Col xs="auto" className="ms-auto text-end mt-n1">
-        <Form.Group style={{ display: "inline-block" }}>
-          <Form.Label style={{ display: "inline-block", width: "auto" }}>
-            From
-          </Form.Label>
+        <Form.Group className="date-input-group">
+          <Form.Label>From</Form.Label>
           <Form.Control
-            style={{ display: "inline-block", width: "auto" }}
             type={"date"}
             name={"date"}
             value={"2018-02-16"}
@@ -27,10 +24,8 @@ const Header = () => {
           />
         </Form.Group>
 
-        <Form.Group style={{ display: "inline-block" }}>
-          <Form.Label style={{ display: "inline-block", width: "auto" }}>
-            To
-          </Form.Label>
+        <Form.Group className="date-input-group">
+          <Form.Label>To</Form.Label>
           <Form.Control
             style={{ display: "inline-block", width: "auto" }}
             type={"date"}
@@ -45,8 +40,8 @@ const Header = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {PERIOD_FREQUENCIES.map((periodF, i) => (
-              <Dropdown.Item key={i}>{periodF}</Dropdown.Item>
+            {PERIOD_FREQUENCIES.map((freq, i) => (
+              <Dropdown.Item key={i}>{freq}</Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
