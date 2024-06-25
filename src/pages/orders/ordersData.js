@@ -91,7 +91,7 @@ export function generateFakeOrders(numOrders = 1) {
 }
 
 
-function getRandomOrderStatus() {
+export function getRandomOrderStatus() {
   const randomNum = My.getRandomNumber(0, orderStatusOptions.length - 1);
   const option = orderStatusOptions[randomNum];
   return option?.name;

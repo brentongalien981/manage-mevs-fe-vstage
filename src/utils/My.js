@@ -59,6 +59,13 @@ class My {
     // Math.floor() rounds down to the nearest integer
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+
+  static generateRandomMoneyAmount(min, max) {
+    const randomAmount = Math.random() * (max - min) + min;
+    const roundedAmount = Math.round(randomAmount * 100) / 100; // Round to 2 decimal places
+    return roundedAmount;
+  }
 }
 
 

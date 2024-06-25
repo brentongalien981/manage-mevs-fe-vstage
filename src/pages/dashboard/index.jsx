@@ -9,6 +9,7 @@ import BarChart from "./BarChart";
 import LineChart from "./LineChart";
 import "./Dashboard.scss";
 import DashboardProvider from "../../contexts/DashboardProvider";
+import AreaChart from "./AreaChart";
 
 const Dashboard = () => (
   <DashboardProvider>
@@ -21,7 +22,8 @@ const Dashboard = () => (
 
         <Row>
           <Col lg="8" className="d-flex">
-            <LineChart />
+            {/* <LineChart /> */}
+            <AreaChart />
           </Col>
 
           <Col lg="4" className="d-flex">
