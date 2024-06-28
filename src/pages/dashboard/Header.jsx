@@ -1,12 +1,21 @@
 import React from "react";
 
-import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
+import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
 import { Calendar, Filter, RefreshCw } from "react-feather";
+import useDashboard from "../../hooks/useDashboard";
 
 const PERIOD_FREQUENCIES = ["Daily", "Weekly", "Monthly", "Yearly"];
 
 const Header = () => {
+  const { isQuerying, isResetting, handleQuery } = useDashboard();
+
+  // Set apply button content.
+  let applyBtnContent = "Apply";
+  if (isQuerying) {
+    applyBtnContent = <Spinner size="sm" animation="border" variant="light" />;
+  }
+
   return (
     <Row className="mb-2 mb-xl-3">
       <Col xs="auto" className="d-none d-sm-block">
@@ -46,8 +55,12 @@ const Header = () => {
           </Dropdown.Menu>
         </Dropdown>
 
-        <Button variant="primary" className="shadow-sm">
-          <RefreshCw className="feather" />
+        <Button variant="primary" className="shadow-sm" onClick={handleQuery}>
+          {applyBtnContent}
+        </Button>
+
+        <Button variant="warning" className="shadow-sm">
+          Reset
         </Button>
       </Col>
     </Row>

@@ -5,6 +5,7 @@ import { Card } from "react-bootstrap";
 import usePalette from "../../hooks/usePalette";
 import useDashboard from "../../hooks/useDashboard";
 import My from "../../utils/My";
+import MyDateUtils from "../../utils/MyDateUtils";
 
 const AreaChart = () => {
   const palette = usePalette();
@@ -35,7 +36,9 @@ const AreaChart = () => {
       curve: "smooth",
     },
     xaxis: {
-      categories: sortedOrdersDataByPeriod.map((data) => data.startDateStr),
+      categories: sortedOrdersDataByPeriod.map((data) =>
+        MyDateUtils.getDateStringForDate(data.startDate)
+      ),
     },
     yaxis: {
       labels: {
@@ -60,7 +63,7 @@ const AreaChart = () => {
     <Card className="w-100">
       <Card.Header>
         <Card.Title>{`${periodFrequency} Sales`}</Card.Title>
-        <h6 className="card-subtitle text-muted">{`${periodFrequency} Sales this period vs Previous Period`}</h6>
+        <h6 className="card-subtitle text-muted">{`${periodFrequency} Sales this range period VS previous range period`}</h6>
       </Card.Header>
       <Card.Body>
         <div className="chart w-100">

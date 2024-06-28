@@ -30,15 +30,9 @@ function sortOrdersDataByCreatedAt(ordersData) {
 }
 
 
-// TODO: Modify the frequencies Monthly and Yearly to be more accurate.
-export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, rangeStartDateStr, rangeEndDateStr, periodFrequency) {
+function getNewCurrentPeriodData(periodStartDateStr, rangeEndDateStr, periodFrequency) {
 
-  // Initialize the period start date.
-  let periodStartDateStr = rangeStartDateStr;
   let periodStartDateTime = new Date(periodStartDateStr + "T00:00:00");
-
-  // Initialize the period end date.
-  let periodEndDateStr = "";
   let periodEndDateTime = getPeriodEndDate(periodStartDateStr, periodFrequency);
 
   // If the rangeEndDate ends earlier than the periodEndDateTime, set the periodEndDateTime to the rangeEndDateTime.
@@ -47,20 +41,33 @@ export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, range
     periodEndDateTime = rangeEndDateTime;
   }
 
-  // Initialize the periodsData array.    
-  let currentPeriodData = {
-    startDateStr: MyDateUtils.getDateStringWithOffset(periodStartDateTime, 0),
-    endDateStr: MyDateUtils.getDateStringWithOffset(periodEndDateTime, 0),
+  return {
+    startDate: periodStartDateTime,
+    endDate: periodEndDateTime,
     totalAmount: 0.0,
     totalOrders: 0
   }
+}
 
+
+// TODO: Modify the frequencies: Monthly and Yearly to be more accurate.
+export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, rangeStartDateStr, rangeEndDateStr, periodFrequency) {
+
+  // Initialize the date range data.  
+  let rangeEndDateTime = new Date(rangeEndDateStr + "T23:59:59");
+
+  // Filter out orders outside the range.
   sortedOrdersData = filterOutOrdersOutsideRange(sortedOrdersData, rangeStartDateStr, rangeEndDateStr);
+
+  // 
   const allPeriodsData = []
   let indexCurrentOrder = 0;
+  let periodStartDateStr = rangeStartDateStr;
 
-  // Loop through by periods.
+  // Loop through by periods like: Daily, Weekly, Monthly, Quarterly, or Yearly.
   while (true) {
+
+    let newCurrentPeriodData = getNewCurrentPeriodData(periodStartDateStr, rangeEndDateStr, periodFrequency);
 
     for (; indexCurrentOrder < sortedOrdersData.length;) {
 
@@ -68,10 +75,10 @@ export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, range
       const orderDateTime = new Date(order.createdAt);
 
       // If current order is within the current period,
-      if (isOrderDateWithinPeriod(orderDateTime, periodStartDateTime, periodEndDateTime)) {
+      if (isOrderDateWithinPeriod(orderDateTime, newCurrentPeriodData.startDate, newCurrentPeriodData.endDate)) {
         // then increment the totalAmount and totalOrders of the currentPeriodData.
-        currentPeriodData.totalAmount += order.totalAmount;
-        currentPeriodData.totalOrders++;
+        newCurrentPeriodData.totalAmount += order.totalAmount;
+        newCurrentPeriodData.totalOrders++;
         indexCurrentOrder++;
       } else {
         // Otherwise, break out of the loop and move to the next period.
@@ -82,25 +89,16 @@ export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, range
     // The moment the for loop breaks or ends, that means we have
     // finished processing all orders within the current period.
     // So, finalize the currentPeriodData and push it to the allPeriodsData array.
-    allPeriodsData.push({ ...currentPeriodData });
+    allPeriodsData.push({ ...newCurrentPeriodData });
 
     // If the periodEndDateTime is greater than or equal to the rangeEndDateTime,
     // then we have processed all orders within the range.
-    if (periodEndDateTime >= rangeEndDateTime) {
+    if (newCurrentPeriodData.endDate >= rangeEndDateTime) {
       break;
     }
 
-
-    // Set the next currentPeriodData.
-    periodStartDateTime = MyDateUtils.getNewDate(periodStartDateTime, getNumDaysInPeriod(periodFrequency));
-    periodEndDateTime = MyDateUtils.getNewDate(periodEndDateTime, getNumDaysInPeriod(periodFrequency));
-
-    currentPeriodData = {
-      startDateStr: MyDateUtils.getDateStringWithOffset(periodStartDateTime, 0),
-      endDateStr: MyDateUtils.getDateStringWithOffset(periodEndDateTime, 0),
-      totalAmount: 0.0,
-      totalOrders: 0
-    }
+    // Set the next periodDateStr.
+    periodStartDateStr = MyDateUtils.getDateStringWithOffset(new Date(newCurrentPeriodData.startDate), getNumDaysInPeriod(periodFrequency));
 
   }
 
