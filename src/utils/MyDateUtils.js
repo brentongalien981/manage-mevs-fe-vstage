@@ -76,6 +76,48 @@ class MyDateUtils {
 
     return differenceInDays;
   }
+
+  static isDateWithinPeriod(orderDate, periodStartDate, periodEndDate) {
+    if (orderDate >= periodStartDate && orderDate <= periodEndDate) {
+      return true;
+    }
+    return false;
+  }
+
+  static getNumDaysInPeriod(periodFrequency) {
+    let numDaysInPeriod = 0;
+
+    switch (periodFrequency) {
+      case "Daily":
+        numDaysInPeriod = 1;
+        break;
+      case "Weekly":
+        numDaysInPeriod = 7;
+        break;
+      case "Monthly":
+        numDaysInPeriod = 30;
+        break;
+      case "Quarterly":
+        numDaysInPeriod = 90;
+        break;
+      case "Yearly":
+        numDaysInPeriod = 365;
+        break;
+      default:
+        break;
+    }
+
+    return numDaysInPeriod;
+  }
+
+
+  static getPeriodEndDate(periodStartDateStr, periodFrequency) {
+
+    const periodStartDate = new Date(periodStartDateStr + "T00:00:00");
+    let periodEndDateStr = MyDateUtils.getDateStringWithOffset(periodStartDate, MyDateUtils.getNumDaysInPeriod(periodFrequency) - 1);
+
+    return new Date(periodEndDateStr + "T23:59:59");
+  }
 }
 
 

@@ -1,3 +1,5 @@
+import MyDateUtils from "../../utils/MyDateUtils";
+
 export function calculateTotalAmountForOrdersData(ordersData) {
   return ordersData.reduce((total, order) => {
     return total + order.totalAmount;
@@ -44,8 +46,8 @@ export function extractDashboardStats(ordersDataForCurrentDateRange, ordersDataF
       label: "Total Sales",
       currency: "$",
       unit: "",
-      currentRangeValue: totalSalesForCurrentDateRange,
-      previousRangeValue: totalSalesForPreviousDateRange,
+      currentRangeValue: (Math.round(totalSalesForCurrentDateRange * 100) / 100),
+      previousRangeValue: (Math.round(totalSalesForPreviousDateRange * 100) / 100),
       growthRatePercentage: calculateRoRGrowthRatePercentage(
         totalSalesForCurrentDateRange,
         totalSalesForPreviousDateRange
@@ -70,12 +72,37 @@ export function extractDashboardStats(ordersDataForCurrentDateRange, ordersDataF
       unit: "units",
       currentRangeValue: numOfProcessingOrderForCurrentRange,
       previousRangeValue: numOfProcessingOrderForPreviousRange,
-      growthRatePercentage: calculateRoRGrowthRatePercentage(
-        numOfProcessingOrderForCurrentRange,
-        numOfProcessingOrderForPreviousRange
-      ),
+      growthRatePercentage: 0 // Force to 0 to not show growth rate for this stat.
     },
   ];
 
   return stats;
+}
+
+
+export function extractPreviousRangeDateStrings(rangeStartDateStr, rangeEndDateStr) {
+
+  const numDaysBetweenRange = MyDateUtils.getNumDayBetweenDates(
+    rangeStartDateStr,
+    rangeEndDateStr
+  );
+  const numYearsBetweenRange = Math.ceil(
+    numDaysBetweenRange / MyDateUtils.getNumDaysInPeriod("Yearly")
+  );
+  const numDaysToGoBack =
+    -1 * numYearsBetweenRange * MyDateUtils.getNumDaysInPeriod("Yearly");
+
+  const previousRangeStartDateStr = MyDateUtils.getDateStringWithOffset(
+    new Date(rangeStartDateStr),
+    numDaysToGoBack
+  );
+  const previousRangeEndDateStr = MyDateUtils.getDateStringWithOffset(
+    new Date(rangeEndDateStr),
+    numDaysToGoBack
+  );
+
+  return {
+    previousRangeStartDateStr,
+    previousRangeEndDateStr
+  };
 }

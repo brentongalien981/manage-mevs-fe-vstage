@@ -6,23 +6,52 @@ import usePalette from "../../hooks/usePalette";
 import useDashboard from "../../hooks/useDashboard";
 import My from "../../utils/My";
 import MyDateUtils from "../../utils/MyDateUtils";
+import { prepareSortedOrdersDataByPeriodFrequency } from "./dashboardData";
+import { extractPreviousRangeDateStrings } from "./dashboardUtils";
 
 const AreaChart = () => {
   const palette = usePalette();
   const {
-    sortedOrdersDataByPeriod,
-    previousRangeSortedOrdersDataByPeriod,
+    ordersDataForCurrentDateRange,
+    ordersDataForPreviousDateRange,
+    rangeStartDateStr,
+    rangeEndDateStr,
     periodFrequency,
   } = useDashboard();
 
+  // Set the previous range variables for chart comparisons.
+  const { previousRangeStartDateStr, previousRangeEndDateStr } =
+    extractPreviousRangeDateStrings(rangeStartDateStr, rangeEndDateStr);
+
+  // Data for current range.
+  const sortedOrdersDataByPeriodForCurrentRange =
+    prepareSortedOrdersDataByPeriodFrequency(
+      ordersDataForCurrentDateRange,
+      rangeStartDateStr,
+      rangeEndDateStr,
+      periodFrequency
+    );
+
+  // Data for previous range.
+  const sortedOrdersDataByPeriodForPreviousRange =
+    prepareSortedOrdersDataByPeriodFrequency(
+      ordersDataForPreviousDateRange,
+      previousRangeStartDateStr,
+      previousRangeEndDateStr,
+      periodFrequency
+    );
+
+  // Actual graph data.
   const data = [
     {
       name: "Sales ($)",
-      data: sortedOrdersDataByPeriod.map((data) => data.totalAmount),
+      data: sortedOrdersDataByPeriodForCurrentRange.map(
+        (data) => data.totalAmount
+      ),
     },
     {
       name: "PoP Sales ($)",
-      data: previousRangeSortedOrdersDataByPeriod.map(
+      data: sortedOrdersDataByPeriodForPreviousRange.map(
         (data) => data.totalAmount
       ),
     },
@@ -36,7 +65,7 @@ const AreaChart = () => {
       curve: "smooth",
     },
     xaxis: {
-      categories: sortedOrdersDataByPeriod.map((data) =>
+      categories: sortedOrdersDataByPeriodForCurrentRange.map((data) =>
         MyDateUtils.getDateStringForDate(data.startDate)
       ),
     },
@@ -63,7 +92,7 @@ const AreaChart = () => {
     <Card className="w-100">
       <Card.Header>
         <Card.Title>{`${periodFrequency} Sales`}</Card.Title>
-        <h6 className="card-subtitle text-muted">{`${periodFrequency} Sales this range period VS previous range period`}</h6>
+        <h6 className="card-subtitle text-muted">{`${periodFrequency} sales this range period VS previous range period`}</h6>
       </Card.Header>
       <Card.Body>
         <div className="chart w-100">

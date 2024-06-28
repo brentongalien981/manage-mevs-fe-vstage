@@ -33,7 +33,7 @@ function sortOrdersDataByCreatedAt(ordersData) {
 function getNewCurrentPeriodData(periodStartDateStr, rangeEndDateStr, periodFrequency) {
 
   let periodStartDateTime = new Date(periodStartDateStr + "T00:00:00");
-  let periodEndDateTime = getPeriodEndDate(periodStartDateStr, periodFrequency);
+  let periodEndDateTime = MyDateUtils.getPeriodEndDate(periodStartDateStr, periodFrequency);
 
   // If the rangeEndDate ends earlier than the periodEndDateTime, set the periodEndDateTime to the rangeEndDateTime.
   let rangeEndDateTime = new Date(rangeEndDateStr + "T23:59:59");
@@ -75,7 +75,7 @@ export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, range
       const orderDateTime = new Date(order.createdAt);
 
       // If current order is within the current period,
-      if (isOrderDateWithinPeriod(orderDateTime, newCurrentPeriodData.startDate, newCurrentPeriodData.endDate)) {
+      if (MyDateUtils.isDateWithinPeriod(orderDateTime, newCurrentPeriodData.startDate, newCurrentPeriodData.endDate)) {
         // then increment the totalAmount and totalOrders of the currentPeriodData.
         newCurrentPeriodData.totalAmount += order.totalAmount;
         newCurrentPeriodData.totalOrders++;
@@ -98,7 +98,7 @@ export function prepareSortedOrdersDataByPeriodFrequency(sortedOrdersData, range
     }
 
     // Set the next periodDateStr.
-    periodStartDateStr = MyDateUtils.getDateStringWithOffset(new Date(newCurrentPeriodData.startDate), getNumDaysInPeriod(periodFrequency));
+    periodStartDateStr = MyDateUtils.getDateStringWithOffset(new Date(newCurrentPeriodData.startDate), MyDateUtils.getNumDaysInPeriod(periodFrequency));
 
   }
 
@@ -110,51 +110,6 @@ function filterOutOrdersOutsideRange(sortedOrdersData, rangeStartDateStr, rangeE
     const orderDateTime = new Date(order.createdAt);
     const rangeStartDate = new Date(rangeStartDateStr + "T00:00:00");
     const rangeEndDate = new Date(rangeEndDateStr + "T23:59:59");
-    return isOrderDateWithinPeriod(orderDateTime, rangeStartDate, rangeEndDate);
+    return MyDateUtils.isDateWithinPeriod(orderDateTime, rangeStartDate, rangeEndDate);
   });
-
-}
-
-
-function isOrderDateWithinPeriod(orderDate, periodStartDate, periodEndDate) {
-  if (orderDate >= periodStartDate && orderDate <= periodEndDate) {
-    return true;
-  }
-  return false;
-}
-
-
-export function getNumDaysInPeriod(periodFrequency) {
-  let numDaysInPeriod = 0;
-
-  switch (periodFrequency) {
-    case "Daily":
-      numDaysInPeriod = 1;
-      break;
-    case "Weekly":
-      numDaysInPeriod = 7;
-      break;
-    case "Monthly":
-      numDaysInPeriod = 30;
-      break;
-    case "Quarterly":
-      numDaysInPeriod = 90;
-      break;
-    case "Yearly":
-      numDaysInPeriod = 365;
-      break;
-    default:
-      break;
-  }
-
-  return numDaysInPeriod;
-}
-
-
-function getPeriodEndDate(periodStartDateStr, periodFrequency) {
-
-  const periodStartDate = new Date(periodStartDateStr + "T00:00:00");
-  let periodEndDateStr = MyDateUtils.getDateStringWithOffset(periodStartDate, getNumDaysInPeriod(periodFrequency) - 1);
-
-  return new Date(periodEndDateStr + "T23:59:59");
 }

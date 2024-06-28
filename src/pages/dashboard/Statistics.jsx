@@ -93,7 +93,7 @@ const Statistics = () => {
     } else if (percentage < 0) {
       badgeClassName = "badge-soft-danger";
       growthDirectionMsg = "Down since last range";
-      growthPercentageLabel = `-${percentage.toFixed(2)}%`;
+      growthPercentageLabel = `${percentage.toFixed(2)}%`;
     }
 
     return (
