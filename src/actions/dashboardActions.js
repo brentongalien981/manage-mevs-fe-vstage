@@ -28,7 +28,8 @@ export async function query({ state, dispatch, addAlert }) {
     onSuccess: (data) => {
       dispatch({
         type: "QUERY_SUCCESS",
-        data
+        ordersDataForCurrentDateRange: data.ordersDataForCurrentDateRange,
+        ordersDataForPreviousDateRange: data.ordersDataForPreviousDateRange
       });
     },
     onFailure: (errorMessage) => {

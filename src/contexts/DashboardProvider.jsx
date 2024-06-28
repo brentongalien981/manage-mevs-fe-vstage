@@ -88,11 +88,16 @@ const initialState = {
       yearOnYearPercentage: 0.0,
     },
   ],
+  // TODO: Delete: Fake data.
   ordersData: sampleOrdersData,
   previousRangeOrdersData: samplePreviousRangeOrdersData,
   sortedOrdersDataByPeriod: sampleSortedOrdersDataByPeriod,
   previousRangeSortedOrdersDataByPeriod:
     samplePreviousRangeSortedOrdersDataByPeriod,
+
+  // Actual data.
+  ordersDataForCurrentDateRange: [],
+  ordersDataForPreviousDateRange: [],
 };
 
 const DashboardProvider = ({ children }) => {
