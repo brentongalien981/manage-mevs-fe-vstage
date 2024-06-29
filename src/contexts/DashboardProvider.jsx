@@ -7,9 +7,9 @@ const initialState = {
   isQuerying: false,
   isResetting: false,
   error: null,
-  rangeStartDateStr: MyDateUtils.getDateStringWithOffset(new Date(), -30), // 30 days ago
+  rangeStartDateStr: MyDateUtils.getDateStringWithOffset(new Date(), -150), // 30 days ago
   rangeEndDateStr: MyDateUtils.getDateStringWithOffset(), // today
-  periodFrequency: "Daily",
+  periodFrequency: "Weekly",
   ordersDataForCurrentDateRange: [],
   ordersDataForPreviousDateRange: [],
 };

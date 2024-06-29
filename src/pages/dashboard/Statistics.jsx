@@ -56,7 +56,10 @@ const Statistics = () => {
                   stat.currentRangeValue
                 )} ${stat.unit}`}</h3>
                 <p className="mb-2">{stat.label}</p>
-                {getGrowthRateStatComponent(stat.growthRatePercentage)}
+                {getGrowthRateStatComponent(
+                  stat.name,
+                  stat.growthRatePercentage
+                )}
               </div>
               <div className="d-inline-block ms-3">
                 <div className="stat">{getStatIcon(stat)}</div>
@@ -81,7 +84,11 @@ const Statistics = () => {
   }
 
   // Get Range on Range growth stat.
-  function getGrowthRateStatComponent(percentage) {
+  function getGrowthRateStatComponent(statName, percentage) {
+    if (statName === "processingOrders") {
+      return null;
+    }
+
     let badgeClassName = "";
     let growthDirectionMsg = "";
     let growthPercentageLabel = "";
@@ -93,6 +100,11 @@ const Statistics = () => {
     } else if (percentage < 0) {
       badgeClassName = "badge-soft-danger";
       growthDirectionMsg = "Down since last range";
+      growthPercentageLabel = `${percentage.toFixed(2)}%`;
+    } else {
+      // If percentage is 0...
+      badgeClassName = "badge-soft-secondary";
+      growthDirectionMsg = "No growth since last range";
       growthPercentageLabel = `${percentage.toFixed(2)}%`;
     }
 

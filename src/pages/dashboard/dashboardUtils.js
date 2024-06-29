@@ -80,6 +80,16 @@ export function extractDashboardStats(ordersDataForCurrentDateRange, ordersDataF
 }
 
 
+/**
+ * Extract the previous range date strings based on current date strings
+ * For example, if the current range is from 2021-01-01 to 2021-12-31,
+ * the previous range will be from 2020-01-01 to 2020-12-31.
+ * Also, if the current range is from 2020-01-01 to 2023-11-20 (which is almost 4 years),
+ * the previous range will be from 2016-01-01 to 2019-11-20.
+ * @param {string} rangeStartDateStr 
+ * @param {string} rangeEndDateStr 
+ * @returns {{previousRangeStartDateStr: string, previousRangeEndDateStr: string}}
+ */
 export function extractPreviousRangeDateStrings(rangeStartDateStr, rangeEndDateStr) {
 
   const numDaysBetweenRange = MyDateUtils.getNumDayBetweenDates(
@@ -105,4 +115,45 @@ export function extractPreviousRangeDateStrings(rangeStartDateStr, rangeEndDateS
     previousRangeStartDateStr,
     previousRangeEndDateStr
   };
+}
+
+
+export function prepareTopSalesDataByCountry(ordersData) {
+
+  // Sales data for a country will have the following structure:
+  // { country: "USA", totalAmount: 1000.0, totalOrders: 10 }
+  const salesDataByCountries = [];
+
+  ordersData.forEach((order) => {
+
+    let existingSalesDataForCountry = null;
+
+    // Check if sales data for the country already exists.
+    for (const salesDataForCountry of salesDataByCountries) {
+      if (salesDataForCountry.country === order.country) {
+        existingSalesDataForCountry = salesDataForCountry;
+        break;
+      }
+    }
+
+    // If sales data for the country already exists, update the total amount and total orders.
+    if (existingSalesDataForCountry) {
+      existingSalesDataForCountry.totalAmount += order.totalAmount;
+      existingSalesDataForCountry.totalOrders += 1;
+    } else {
+      // If sales data for the country does not exist, create a new entry.
+      salesDataByCountries.push({
+        country: order.country,
+        totalAmount: order.totalAmount,
+        totalOrders: 1
+      });
+    }
+
+  });
+
+  // Sort the sales data by total amount in descending order.
+  salesDataByCountries.sort((a, b) => b.totalAmount - a.totalAmount);
+
+  return salesDataByCountries;
+
 }

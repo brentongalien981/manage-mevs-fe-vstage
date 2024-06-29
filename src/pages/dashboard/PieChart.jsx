@@ -8,21 +8,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquare } from "@fortawesome/free-solid-svg-icons";
 
 import usePalette from "../../hooks/usePalette";
+import useDashboard from "../../hooks/useDashboard";
+import {
+  formatNumberWithCommas,
+  prepareTopSalesDataByCountry,
+} from "./dashboardUtils";
 
 const PieChart = () => {
   const palette = usePalette();
+  const { ordersDataForCurrentDateRange } = useDashboard();
+
+  const topFourSalesDataByCountry = prepareTopSalesDataByCountry(
+    ordersDataForCurrentDateRange
+  ).slice(0, 4);
+
+  const themes = ["success", "primary", "warning", "danger", "secondary"];
 
   const data = {
-    labels: ["Social", "Search Engines", "Direct", "Other"],
+    labels: topFourSalesDataByCountry.map((data) => data.country),
     datasets: [
       {
-        data: [260, 125, 54, 146],
-        backgroundColor: [
-          palette.primary,
-          palette.warning,
-          palette.danger,
-          "#E8EAED",
-        ],
+        data: topFourSalesDataByCountry.map((data) => data.totalAmount),
+        backgroundColor: themes.map((theme) => palette[theme]),
         borderWidth: 5,
         borderColor: palette.white,
       },
@@ -31,13 +38,32 @@ const PieChart = () => {
 
   const options = {
     maintainAspectRatio: false,
-    cutout: "70%",
+    cutout: "30%",
     plugins: {
       legend: {
         display: false,
       },
     },
   };
+
+  const tableRows = topFourSalesDataByCountry.map((data, i) => {
+    const salesAmount = formatNumberWithCommas(
+      parseFloat(data.totalAmount.toFixed(2))
+    );
+    const countryDisplayName =
+      data.country.length > 7 ? data.country.slice(0, 7) + "..." : data.country;
+
+    return (
+      <tr key={i}>
+        <td>
+          <FontAwesomeIcon icon={faSquare} className={`text-${themes[i]}`} />
+          <span title={data.country}>{` ${countryDisplayName}`}</span>
+        </td>
+        <td className="text-end">{`$${salesAmount}`}</td>
+        <td className="text-end text-success">{`${data.totalOrders}`}</td>
+      </tr>
+    );
+  });
 
   return (
     <Card className="flex-fill w-100">
@@ -48,13 +74,12 @@ const PieChart = () => {
               <MoreHorizontal />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item>Action</Dropdown.Item>
-              <Dropdown.Item>Another Action</Dropdown.Item>
-              <Dropdown.Item>Something else here</Dropdown.Item>
+              <Dropdown.Item>TODO: Download Image</Dropdown.Item>
+              <Dropdown.Item>TODO: Download CSV</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
-        <Card.Title className="mb-0">Weekly sales</Card.Title>
+        <Card.Title className="mb-0">Range Top Sales by Country</Card.Title>
       </Card.Header>
 
       <Card.Body className="d-flex">
@@ -68,45 +93,12 @@ const PieChart = () => {
           <Table className="mb-0">
             <thead>
               <tr>
-                <th>Source</th>
-                <th className="text-end">Revenue</th>
-                <th className="text-end">Value</th>
+                <th>Country</th>
+                <th className="text-end">Sales</th>
+                <th className="text-end">Orders</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <FontAwesomeIcon icon={faSquare} className="text-primary" />{" "}
-                  Direct
-                </td>
-                <td className="text-end">$ 2602</td>
-                <td className="text-end text-success">+43%</td>
-              </tr>
-              <tr>
-                <td>
-                  <FontAwesomeIcon icon={faSquare} className="text-warning" />{" "}
-                  Affiliate
-                </td>
-                <td className="text-end">$ 1253</td>
-                <td className="text-end text-success">+13%</td>
-              </tr>
-              <tr>
-                <td>
-                  <FontAwesomeIcon icon={faSquare} className="text-danger" />{" "}
-                  E-mail
-                </td>
-                <td className="text-end">$ 541</td>
-                <td className="text-end text-success">+24%</td>
-              </tr>
-              <tr>
-                <td>
-                  <FontAwesomeIcon icon={faSquare} className="text-dark" />{" "}
-                  Other
-                </td>
-                <td className="text-end">$ 1465</td>
-                <td className="text-end text-success">+11%</td>
-              </tr>
-            </tbody>
+            <tbody>{tableRows}</tbody>
           </Table>
         </div>
       </Card.Body>
