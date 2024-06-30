@@ -3,6 +3,9 @@ import My from "../../utils/My";
 import { getRandomOrderStatus } from "../orders/ordersData";
 import MyDateUtils from "../../utils/MyDateUtils";
 
+export const themes = ["success", "primary", "warning", "danger", "secondary"];
+export const NUM_TOP_COUNTRIES_DATA_TO_SHOW = 4;
+
 export function generateDashboardOrdersData({ numItems, rangeStartDateStr, rangeEndDateStr }) {
   let data = [];
   rangeStartDateStr = rangeStartDateStr + "T00:00:00";

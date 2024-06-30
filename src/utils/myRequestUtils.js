@@ -1,7 +1,7 @@
 import My from "./My";
 import MyJsonLocalStorage from "./MyJsonLocalStorage";
 
-export async function myFetch({ url, method = "GET", body, onSuccess, onFailure, onValidationErrors }) {
+export async function myFetch({ url, method = "GET", body, onSuccess, onFailure, onValidationErrors, showLogs = true }) {
 
   // Log fetch info.
   logMyFetchInfo(url, method)
@@ -25,13 +25,13 @@ export async function myFetch({ url, method = "GET", body, onSuccess, onFailure,
 
 
     if (response.status === 200 || response.status === 201) {
-      onDefaultSuccess(data);
+      showLogs ? onDefaultSuccess(data) : null;
       onSuccess?.(data);
     } else {
 
-      // Handle validation errors.
+      // Handle multiple validation errors.
       if (data.multipleErrorsObj) {
-        onDefaultValidationFailure(data.multipleErrorsObj);
+        showLogs ? onDefaultValidationFailure(data.multipleErrorsObj) : null;
         onValidationErrors?.(data.multipleErrorsObj);
       }
 
@@ -43,8 +43,7 @@ export async function myFetch({ url, method = "GET", body, onSuccess, onFailure,
     }
 
   } catch (e) {
-    // onFailure ? onFailure(e.message) : onDefaultFailure(e.message);
-    onDefaultFailure(e.message);
+    showLogs ? onDefaultFailure(e.message) : null;
     onFailure?.(e.message);
   }
 

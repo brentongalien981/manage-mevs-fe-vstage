@@ -4,42 +4,15 @@ import { Card } from "react-bootstrap";
 
 import usePalette from "../../hooks/usePalette";
 import useDashboard from "../../hooks/useDashboard";
-import My from "../../utils/My";
 import MyDateUtils from "../../utils/MyDateUtils";
-import { prepareSortedOrdersDataByPeriodFrequency } from "./dashboardData";
-import { extractPreviousRangeDateStrings } from "./dashboardUtils";
 
 const AreaChart = () => {
   const palette = usePalette();
   const {
-    ordersDataForCurrentDateRange,
-    ordersDataForPreviousDateRange,
-    rangeStartDateStr,
-    rangeEndDateStr,
+    sortedOrdersDataByPeriodForCurrentRange,
+    sortedOrdersDataByPeriodForPreviousRange,
     periodFrequency,
   } = useDashboard();
-
-  // Set the previous range variables for chart comparisons.
-  const { previousRangeStartDateStr, previousRangeEndDateStr } =
-    extractPreviousRangeDateStrings(rangeStartDateStr, rangeEndDateStr);
-
-  // Data for current range.
-  const sortedOrdersDataByPeriodForCurrentRange =
-    prepareSortedOrdersDataByPeriodFrequency(
-      ordersDataForCurrentDateRange,
-      rangeStartDateStr,
-      rangeEndDateStr,
-      periodFrequency
-    );
-
-  // Data for previous range.
-  const sortedOrdersDataByPeriodForPreviousRange =
-    prepareSortedOrdersDataByPeriodFrequency(
-      ordersDataForPreviousDateRange,
-      previousRangeStartDateStr,
-      previousRangeEndDateStr,
-      periodFrequency
-    );
 
   // Actual graph data.
   const data = [
@@ -91,8 +64,8 @@ const AreaChart = () => {
   return (
     <Card className="w-100">
       <Card.Header>
-        <Card.Title>{`${periodFrequency} Sales`}</Card.Title>
-        <h6 className="card-subtitle text-muted">{`${periodFrequency} sales this range period VS previous range period`}</h6>
+        <Card.Title>{`Range Sales by Period`}</Card.Title>
+        <h6 className="card-subtitle text-muted">{`Sales this range period VS previous range period`}</h6>
       </Card.Header>
       <Card.Body>
         <div className="chart w-100">

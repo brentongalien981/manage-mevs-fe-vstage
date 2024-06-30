@@ -13,22 +13,17 @@ import {
   formatNumberWithCommas,
   prepareTopSalesDataByCountry,
 } from "./dashboardUtils";
+import { themes } from "./dashboardData";
 
 const PieChart = () => {
   const palette = usePalette();
-  const { ordersDataForCurrentDateRange } = useDashboard();
-
-  const topFourSalesDataByCountry = prepareTopSalesDataByCountry(
-    ordersDataForCurrentDateRange
-  ).slice(0, 4);
-
-  const themes = ["success", "primary", "warning", "danger", "secondary"];
+  const { topSalesDataByCountry } = useDashboard();
 
   const data = {
-    labels: topFourSalesDataByCountry.map((data) => data.country),
+    labels: topSalesDataByCountry.map((data) => data.country),
     datasets: [
       {
-        data: topFourSalesDataByCountry.map((data) => data.totalAmount),
+        data: topSalesDataByCountry.map((data) => data.totalAmount),
         backgroundColor: themes.map((theme) => palette[theme]),
         borderWidth: 5,
         borderColor: palette.white,
@@ -38,7 +33,7 @@ const PieChart = () => {
 
   const options = {
     maintainAspectRatio: false,
-    cutout: "30%",
+    cutout: "50%",
     plugins: {
       legend: {
         display: false,
@@ -46,7 +41,8 @@ const PieChart = () => {
     },
   };
 
-  const tableRows = topFourSalesDataByCountry.map((data, i) => {
+  // Set up table rows.
+  const tableRows = topSalesDataByCountry.map((data, i) => {
     const salesAmount = formatNumberWithCommas(
       parseFloat(data.totalAmount.toFixed(2))
     );

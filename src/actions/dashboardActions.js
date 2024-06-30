@@ -20,11 +20,18 @@ export async function query({ state, dispatch, addAlert }) {
     periodFrequency: state.periodFrequency,
   };
 
+  // TODO: DELETE
+  My.log("##################################");
+  My.log("dashboardParams ==> ...");
+  My.log(dashboardParams);
+  My.log("##################################");
+
   // Make a POST request to query.
   await myFetch({
     url: `/dashboard/query`,
     method: "POST",
     body: dashboardParams,
+    showLogs: false,
     onSuccess: (data) => {
       dispatch({
         type: "QUERY_SUCCESS",
@@ -46,4 +53,26 @@ export async function query({ state, dispatch, addAlert }) {
     }
   });
 
+}
+
+
+export function handleRangeDateChange(event, dispatch) {
+
+  const inputName = event.target.name;
+  const inputValue = event.target.value;
+
+  dispatch({
+    type: "HANDLE_TIMELINE_PARAM_CHANGE",
+    inputName,
+    inputValue
+  });
+
+}
+
+
+export function handlePeriodFrequencyChange(eventKey, dispatch) {
+  dispatch({
+    type: "HANDLE_PERIO_FREQUENCY_CHANGE",
+    periodFrequency: eventKey
+  });
 }

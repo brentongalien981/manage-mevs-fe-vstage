@@ -8,7 +8,16 @@ import useDashboard from "../../hooks/useDashboard";
 const PERIOD_FREQUENCIES = ["Daily", "Weekly", "Monthly", "Yearly"];
 
 const Header = () => {
-  const { isQuerying, isResetting, handleQuery } = useDashboard();
+  const {
+    isQuerying,
+    isResetting,
+    rangeStartDateStr,
+    rangeEndDateStr,
+    periodFrequency,
+    handleRangeDateChange,
+    handlePeriodFrequencyChange,
+    handleQuery,
+  } = useDashboard();
 
   // Set apply button content.
   let applyBtnContent = "Apply";
@@ -27,9 +36,9 @@ const Header = () => {
           <Form.Label>From</Form.Label>
           <Form.Control
             type={"date"}
-            name={"date"}
-            value={"2018-02-16"}
-            onChange={() => {}}
+            name={"rangeStartDateStr"}
+            value={rangeStartDateStr}
+            onChange={handleRangeDateChange}
           />
         </Form.Group>
 
@@ -38,19 +47,25 @@ const Header = () => {
           <Form.Control
             style={{ display: "inline-block", width: "auto" }}
             type={"date"}
-            name={"date"}
-            value={"2021-08-01"}
-            onChange={() => {}}
+            name={"rangeEndDateStr"}
+            value={rangeEndDateStr}
+            onChange={handleRangeDateChange}
           />
         </Form.Group>
-        <Dropdown className="d-inline me-2">
+        <Dropdown
+          className="d-inline me-2"
+          onSelect={handlePeriodFrequencyChange}
+        >
           <Dropdown.Toggle variant="light" className="bg-white shadow-sm">
-            <Calendar className="feather align-middle mt-n1" /> Daily
+            <Calendar className="feather align-middle mt-n1" />
+            {` ${periodFrequency}`}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
             {PERIOD_FREQUENCIES.map((freq, i) => (
-              <Dropdown.Item key={i}>{freq}</Dropdown.Item>
+              <Dropdown.Item eventKey={freq} key={i}>
+                {freq}
+              </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>

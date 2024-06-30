@@ -17,8 +17,16 @@ function useDashboard() {
     dashboardActions.query({ state, dispatch, addAlert });
   }
 
+  function handleRangeDateChange(event) {
+    dashboardActions.handleRangeDateChange(event, dispatch);
+  }
 
-  return { ...state, handleQuery };
+  function handlePeriodFrequencyChange(eventKey) {
+    dashboardActions.handlePeriodFrequencyChange(eventKey, dispatch);
+  }
+
+
+  return { ...state, handleRangeDateChange, handlePeriodFrequencyChange, handleQuery };
 }
 
 export default useDashboard;

@@ -5,22 +5,10 @@ import { DollarSign, ShoppingBag } from "react-feather";
 
 import illustration from "../../assets/img/illustrations/customer-support.png";
 import useDashboard from "../../hooks/useDashboard";
-import {
-  extractDashboardStats,
-  formatNumberWithCommas,
-} from "./dashboardUtils";
+import { formatNumberWithCommas } from "./dashboardUtils";
 
 const Statistics = () => {
-  const {
-    periodFrequency,
-    ordersDataForCurrentDateRange,
-    ordersDataForPreviousDateRange,
-  } = useDashboard();
-
-  const stats = extractDashboardStats(
-    ordersDataForCurrentDateRange,
-    ordersDataForPreviousDateRange
-  );
+  const { stats } = useDashboard();
 
   const welcomeTileComponent = (
     <Col md="6" xl className="d-flex">

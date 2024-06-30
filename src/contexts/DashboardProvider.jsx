@@ -10,8 +10,12 @@ const initialState = {
   rangeStartDateStr: MyDateUtils.getDateStringWithOffset(new Date(), -150), // 30 days ago
   rangeEndDateStr: MyDateUtils.getDateStringWithOffset(), // today
   periodFrequency: "Weekly",
-  ordersDataForCurrentDateRange: [],
-  ordersDataForPreviousDateRange: [],
+  ordersDataForCurrentDateRange: [], // TODO: DELETE
+  ordersDataForPreviousDateRange: [], // TODO: DELETE
+  stats: [],
+  sortedOrdersDataByPeriodForCurrentRange: [],
+  sortedOrdersDataByPeriodForPreviousRange: [],
+  topSalesDataByCountry: [],
 };
 
 const DashboardProvider = ({ children }) => {
