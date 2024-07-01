@@ -17,12 +17,19 @@ const Header = () => {
     handleRangeDateChange,
     handlePeriodFrequencyChange,
     handleQuery,
+    handleReset,
   } = useDashboard();
 
   // Set apply button content.
   let applyBtnContent = "Apply";
   if (isQuerying) {
     applyBtnContent = <Spinner size="sm" animation="border" variant="light" />;
+  }
+
+  // Set the reset button content.
+  let resetBtnContent = "Reset";
+  if (isResetting) {
+    resetBtnContent = <Spinner size="sm" animation="border" variant="light" />;
   }
 
   return (
@@ -74,8 +81,8 @@ const Header = () => {
           {applyBtnContent}
         </Button>
 
-        <Button variant="warning" className="shadow-sm">
-          Reset
+        <Button variant="warning" className="shadow-sm" onClick={handleReset}>
+          {resetBtnContent}
         </Button>
       </Col>
     </Row>

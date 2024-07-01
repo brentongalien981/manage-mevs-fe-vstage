@@ -1,11 +1,8 @@
+import { initialState } from "../contexts/DashboardProvider";
 import My from "../utils/My";
 import { myFetch } from "../utils/myRequestUtils";
 
-export async function query({ state, dispatch, addAlert }) {
-
-  if (state.isQuerying || state.isResetting) {
-    return;
-  }
+export async function query({ state, dispatch, addAlert, customDashboardParams }) {
 
   // Dispatch the request for loading...
   dispatch({
@@ -13,8 +10,8 @@ export async function query({ state, dispatch, addAlert }) {
   });
 
 
-  // Set request params.
-  const dashboardParams = {
+  // Set request params. If customDashboardParams is not provided, use the current state.
+  const dashboardParams = customDashboardParams || {
     rangeStartDateStr: state.rangeStartDateStr,
     rangeEndDateStr: state.rangeEndDateStr,
     periodFrequency: state.periodFrequency,
@@ -75,4 +72,22 @@ export function handlePeriodFrequencyChange(eventKey, dispatch) {
     type: "HANDLE_PERIO_FREQUENCY_CHANGE",
     periodFrequency: eventKey
   });
+}
+
+
+export function handleReset({ state, dispatch, addAlert }) {
+
+  const customDashboardParams = {
+    rangeStartDateStr: initialState.rangeStartDateStr,
+    rangeEndDateStr: initialState.rangeEndDateStr,
+    periodFrequency: initialState.periodFrequency
+  };
+
+  dispatch({
+    type: "RESET",
+    customDashboardParams
+  });
+
+  query({ state, dispatch, addAlert, customDashboardParams });
+
 }
