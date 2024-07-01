@@ -1,10 +1,9 @@
 import React from "react";
-import AuthGuard from "../../components/guards/AuthGuard";
 
-const Returns = () => {
+const Products = () => {
   return (
     <div>
-      <h2>PENDING: Returns</h2>
+      <h2>PENDING: Products</h2>
       <p>
         NOTE: This feature is PENDING and being migrated from old framework to
         new framework.
@@ -13,4 +12,4 @@ const Returns = () => {
   );
 };
 
-export default Returns;
+export default Products;

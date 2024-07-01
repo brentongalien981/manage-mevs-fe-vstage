@@ -1,5 +1,5 @@
 import React from "react";
-import { ShoppingBag, TrendingUp, Truck, User } from "react-feather";
+import { Package, ShoppingBag, TrendingUp, Truck, User } from "react-feather";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
@@ -16,6 +16,12 @@ const SidebarNav = () => {
       <li className="sidebar-item">
         <Link to={`/orders`} className="sidebar-link">
           {<ShoppingBag className="feather align-middle" />}Orders
+        </Link>
+      </li>
+
+      <li className="sidebar-item">
+        <Link to={`/products`} className="sidebar-link">
+          {<Package className="feather align-middle" />}Products
         </Link>
       </li>
 
