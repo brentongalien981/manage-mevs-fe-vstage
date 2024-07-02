@@ -40,7 +40,7 @@ const Header = () => {
 
       <Col xs="auto" className="ms-auto text-end mt-n1">
         <Form.Group className="date-input-group">
-          <Form.Label>From</Form.Label>
+          <Form.Label className="mx-2">From</Form.Label>
           <Form.Control
             type={"date"}
             name={"rangeStartDateStr"}
@@ -50,7 +50,7 @@ const Header = () => {
         </Form.Group>
 
         <Form.Group className="date-input-group">
-          <Form.Label>To</Form.Label>
+          <Form.Label className="mx-2">To</Form.Label>
           <Form.Control
             style={{ display: "inline-block", width: "auto" }}
             type={"date"}
@@ -60,7 +60,7 @@ const Header = () => {
           />
         </Form.Group>
         <Dropdown
-          className="d-inline me-2"
+          className="d-inline mx-2"
           onSelect={handlePeriodFrequencyChange}
         >
           <Dropdown.Toggle variant="light" className="bg-white shadow-sm">
@@ -77,11 +77,19 @@ const Header = () => {
           </Dropdown.Menu>
         </Dropdown>
 
-        <Button variant="primary" className="shadow-sm" onClick={handleQuery}>
+        <Button
+          variant="primary"
+          className="shadow-sm mx-1"
+          onClick={handleQuery}
+        >
           {applyBtnContent}
         </Button>
 
-        <Button variant="warning" className="shadow-sm" onClick={handleReset}>
+        <Button
+          variant="warning"
+          className="shadow-sm mx-1"
+          onClick={handleReset}
+        >
           {resetBtnContent}
         </Button>
       </Col>
