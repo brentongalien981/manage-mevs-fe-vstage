@@ -8,6 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 const Home = lazy(() => import("./pages/home"));
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Orders = lazy(() => import("./pages/orders"));
+const EditOrder = lazy(() => import("./pages/edit-order"));
 const Returns = lazy(() => import("./pages/returns"));
 const Products = lazy(() => import("./pages/products"));
 const Page404 = lazy(() => import("./pages/auth/Page404"));
@@ -22,6 +23,7 @@ const routes = [
       { path: "", element: <Dashboard /> },
       { path: "dashboard", element: <Dashboard /> },
       { path: "orders", element: <Orders /> },
+      { path: "orders/:orderId/edit", element: <EditOrder /> },
       { path: "returns", element: <Returns /> },
       { path: "products", element: <Products /> },
       { path: "signup", element: <Signup /> },

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import My from "../../utils/My";
 import TheProgressBar from "./TheProgressBar";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function getSortIcon(sortOrder) {
   switch (sortOrder) {
@@ -26,6 +27,7 @@ function getSortIcon(sortOrder) {
 
 const OrdersTable = () => {
   const { state, queryOrders, handleColumnSort } = useOrders();
+  const navigate = useNavigate();
 
   useEffect(() => {
     queryOrders();
@@ -58,11 +60,22 @@ const OrdersTable = () => {
   const tableRows = state.orders.map((order, i) => {
     let rowCells = [];
 
+    // Route for editing an order.
+    const editOrderRoute = `/orders/${order._id}/edit`;
+
     // Inject the Actions cell as the first cell of a row.
     rowCells.push(
       <td key={`order${i}-actions`}>
-        <Edit2 className="align-middle me-1" size={18} />
-        <Trash className="align-middle" size={18} />
+        <Edit2
+          className="align-middle me-1 edit-order-icon"
+          size={18}
+          onClick={() => navigate(editOrderRoute)}
+        />
+        <Trash
+          className="align-middle delete-order-icon"
+          size={18}
+          onClick={() => alert("TODO: This functionality is pending.")}
+        />
       </td>
     );
 

@@ -25,3 +25,15 @@
 .date-input-labels {
   margin-top: 10px;
 }
+
+.edit-order-icon, .delete-order-icon {
+  cursor: pointer;
+}
+
+.edit-order-icon:hover {
+  color: blue;
+}
+
+.delete-order-icon:hover {
+  color: red;
+}
