@@ -1,27 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { orderFormFieldsData } from "./editOrderData";
 import { myFetch } from "../../utils/myRequestUtils";
 import useFloatingAlerts from "../../hooks/useFloatingAlerts";
-import MyDateUtils from "../../utils/MyDateUtils";
-import { orderStatusOptions } from "../orders/ordersData";
+import OrderForm from "./OrderForm";
 
 const EditOrder = () => {
   const { orderId } = useParams();
   const [formFieldsData, setFormFieldsData] = useState(orderFormFieldsData);
   const [order, setOrder] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { addAlert } = useFloatingAlerts();
 
   // Fetch order details by orderId.
@@ -54,79 +45,80 @@ const EditOrder = () => {
     setOrder(updatedOrder);
   }
 
-  function getFormFields(side) {
-    // Left form is from 0 to 6 and right form is from 7 to 13.
-    const startIndex = side === "left" ? 0 : 7;
-    let numFieldsPerSide = 7;
-
-    const formFields = [];
-    for (let i = 0; i < numFieldsPerSide; i++) {
-      const currentIndex = i + startIndex;
-      const field = formFieldsData[currentIndex];
-
-      // Set the fieldValue.
-      let fieldValue = order[field.dbPropName];
-      if (
-        field.dbPropName === "createdAt" ||
-        field.dbPropName === "updatedAt"
-      ) {
-        fieldValue = MyDateUtils.getDateStringForDate(new Date(fieldValue));
-      } else if (field.dbPropName === "orderStatus") {
-        fieldValue = order.orderStatus?.value;
-      }
-
-      // Set the input.
-      formFields.push(
-        <Form.Group className="mb-3" key={currentIndex}>
-          <Form.Label>{field.placeholder}</Form.Label>
-          {field.type === "select" ? (
-            // If the field is orderStatus (dropdown input type)...
-            <Form.Select
-              key={field.name}
-              name={field.name}
-              value={fieldValue}
-              onChange={handleInputChange}
-            >
-              {orderStatusOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </Form.Select>
-          ) : (
-            // If the field is the regular input type...
-            <Form.Control
-              type={field.type}
-              name={field.name}
-              placeholder={field.placeholder}
-              value={fieldValue}
-              disabled={!field.isEditable}
-              onChange={handleInputChange}
-            />
-          )}
-        </Form.Group>
-      );
+  async function handleUpdate() {
+    // Guard against multiple clicks.
+    if (isUpdating) {
+      return;
     }
 
-    return (
-      <Col lg="6">
-        <Card>
-          <Card.Body>
-            <Form>{formFields}</Form>
-          </Card.Body>
-        </Card>
-      </Col>
-    );
+    // Initiate the update process.
+    setIsUpdating(true);
+
+    // Prepare the simplified version of the order object.
+    const simplifiedOrder = {
+      firstName: order.firstName,
+      lastName: order.lastName,
+      street1: order.street1,
+      city: order.city,
+      province: order.province,
+      postalCode: order.postalCode,
+      country: order.country,
+      email: order.email,
+      phone: order.phone,
+      orderStatusValue: order.orderStatus.value,
+    };
+
+    // Make the backend update request.
+    await myFetch({
+      url: `/orders/${orderId}`,
+      method: "PUT",
+      body: simplifiedOrder,
+      onSuccess: (data) => {
+        setIsUpdating(false);
+        addAlert({
+          message: "Order updated successfully.",
+          variant: "success",
+        });
+      },
+      onFailure: (errorMessage) => {
+        setIsUpdating(false);
+        addAlert({
+          message: `${errorMessage} Update failed.`,
+          variant: "danger",
+        });
+      },
+      onValidationErrors: (multipleErrorsObj) => {
+        setIsUpdating(false);
+
+        // Combine multiple errors.
+        const errors = multipleErrorsObj.errors.map((e, i) => {
+          return <p key={i}>{e.message}</p>;
+        });
+        const errorsComp = <div>{errors}</div>;
+
+        addAlert({
+          message: errorsComp,
+          variant: "danger",
+        });
+      },
+    });
   }
 
+  // Set main content.
   let mainContent = (
     <Row>
-      {getFormFields("left")}
-      {getFormFields("right")}
-
+      <OrderForm
+        formFieldsData={formFieldsData}
+        order={order}
+        handleInputChange={handleInputChange}
+      />
       <Col lg="12">
-        <Button variant="primary" type="submit">
-          Update
+        <Button variant="primary" type="submit" onClick={handleUpdate}>
+          {isUpdating ? (
+            <Spinner size="sm" animation="border" variant="light" />
+          ) : (
+            "Update"
+          )}
         </Button>
       </Col>
     </Row>
