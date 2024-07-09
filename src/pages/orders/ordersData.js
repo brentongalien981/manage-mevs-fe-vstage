@@ -32,6 +32,7 @@ export const orderStatusOptions = [
 export const initialOrdersFilters = [
   { name: "orderId", dbPropName: "_id", type: "text", value: "", isSortable: true, sortOrder: "none", placeholder: "Order ID" },
   { name: "stripePaymentIntentId", dbPropName: "stripePaymentIntentId", type: "text", value: "", isSortable: true, sortOrder: "none", placeholder: "Payment ID" },
+  { name: "shipmentId", dbPropName: "shipmentId", type: "text", value: "", isSortable: true, sortOrder: "none", placeholder: "Shipment ID" },
 
   { name: "orderStatus", dbPropName: "orderStatus", type: "select", value: 0, isSortable: false, sortOrder: "none", placeholder: "Status", options: orderStatusOptions },
 

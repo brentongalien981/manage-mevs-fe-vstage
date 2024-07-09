@@ -33,6 +33,7 @@ const OrdersTable = () => {
     queryOrders();
   }, []);
 
+  // Set up the table headers.
   const tableHeaders = state.ordersTableColumnsData.map((data) => {
     let sortComponent = null;
     if (data.isSortable) {
@@ -57,6 +58,7 @@ const OrdersTable = () => {
     );
   });
 
+  // Set up the table rows.
   const tableRows = state.orders.map((order, i) => {
     let rowCells = [];
 
@@ -79,14 +81,16 @@ const OrdersTable = () => {
       </td>
     );
 
-    // Based on the table columns name, populate the row cells
+    // Based on the table column's name, populate the row cells
     for (const columnData of state.ordersTableColumnsData) {
       const dbPropName = columnData.dbPropName;
+      let completeCellValue = order[dbPropName];
       let cellValue = order[dbPropName];
 
       switch (dbPropName) {
         case "_id":
         case "stripePaymentIntentId":
+        case "shipmentId":
           // Only show the last 5 characters of the ids...
           cellValue =
             "..." +
@@ -98,16 +102,22 @@ const OrdersTable = () => {
           cellValue = cellValue.substring(0, 10);
           break;
         case "orderStatus":
+          completeCellValue = cellValue.name;
           cellValue = cellValue.name;
           break;
       }
 
-      rowCells.push(<td key={`order${i}-${dbPropName}`}>{cellValue}</td>);
+      rowCells.push(
+        <td key={`order${i}-${dbPropName}`} title={completeCellValue}>
+          {cellValue}
+        </td>
+      );
     }
 
     return <tr key={i}>{rowCells}</tr>;
   });
 
+  // Set up the table depending on if we are querying, have an error, or successfully have data.
   let table = (
     <Table id="the-orders-table" bordered striped hover>
       <thead>

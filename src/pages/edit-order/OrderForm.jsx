@@ -4,14 +4,27 @@ import { orderStatusOptions } from "../orders/ordersData";
 
 const OrderForm = ({ formFieldsData, order, handleInputChange }) => {
   function getFormFields(side) {
-    // Left form is from 0 to 6 and right form is from 7 to 13.
-    const startIndex = side === "left" ? 0 : 7;
-    let numFieldsPerSide = 7;
+    // Set the start and stop indexes based on the side.
+    let startIndex = 0;
+    let stopIndex = 0;
 
+    for (let i = 0; i < formFieldsData.length; i++) {
+      const field = formFieldsData[i];
+      if (field.name === "tax") {
+        if (side === "left") {
+          stopIndex = i + 1;
+        } else {
+          startIndex = i + 1;
+          stopIndex = formFieldsData.length;
+        }
+        break;
+      }
+    }
+
+    // Loop through the formFieldsData and create the form fields.
     const formFields = [];
-    for (let i = 0; i < numFieldsPerSide; i++) {
-      const currentIndex = i + startIndex;
-      const field = formFieldsData[currentIndex];
+    for (let i = startIndex; i < stopIndex; i++) {
+      const field = formFieldsData[i];
 
       // Set the fieldValue.
       let fieldValue = order[field.dbPropName];
@@ -26,7 +39,7 @@ const OrderForm = ({ formFieldsData, order, handleInputChange }) => {
 
       // Set the input.
       formFields.push(
-        <Form.Group className="mb-3" key={currentIndex}>
+        <Form.Group className="mb-3" key={i}>
           <Form.Label>{field.placeholder}</Form.Label>
           {field.type === "select" ? (
             // If the field is orderStatus (dropdown input type)...
