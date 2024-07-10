@@ -75,7 +75,7 @@ function formatCellValue(cellValue, propName) {
     case "name":
       break;
     default:
-      if (cellValue.length > 9) {
+      if (cellValue?.length > 9) {
         cellValue = cellValue.substring(0, 8) + "...";
       }
       break;
