@@ -34,3 +34,54 @@ function getOrderFormFieldsData() {
 
   return data;
 }
+
+
+export const orderItemPropsData = [
+  { name: "orderItemId", dbPropName: "_id", value: "", placeholder: "Order Item ID" },
+  { name: "quantity", dbPropName: "quantity", value: "", placeholder: "Qty" },
+  { name: "price", dbPropName: "price", value: "", placeholder: "Price" }
+];
+
+
+export const orderItemProductPropsData = [
+  { name: "productId", dbPropName: "_id", value: "", placeholder: "Product ID" },
+  { name: "name", dbPropName: "name", value: "", placeholder: "Name" },
+  { name: "model", dbPropName: "model", value: "", placeholder: "Model" },
+];
+
+
+export const orderItemProductBrandPropsData = [
+  // { name: "brandId", dbPropName: "_id", value: "", placeholder: "Brand ID" },
+  { name: "brandName", dbPropName: "name", value: "", placeholder: "Brand" },
+];
+
+
+export const orderItemProductCategoryPropsData = [
+  // { name: "categoryId", dbPropName: "_id", value: "", placeholder: "Category ID" },
+  { name: "categoryName", dbPropName: "name", value: "", placeholder: "Category" },
+];
+
+
+// Each row of orderItem has sections: orderItem, product, brand, category.
+export const orderItemRowSections = [
+  {
+    name: "orderItem",
+    getSource: (orderItem) => orderItem,
+    sourcePropsData: orderItemPropsData
+  },
+  {
+    name: "product",
+    getSource: (orderItem) => orderItem.product,
+    sourcePropsData: orderItemProductPropsData,
+  },
+  {
+    name: "brand",
+    getSource: (orderItem) => orderItem.product.brand,
+    sourcePropsData: orderItemProductBrandPropsData,
+  },
+  {
+    name: "category",
+    getSource: (orderItem) => orderItem.product.category,
+    sourcePropsData: orderItemProductCategoryPropsData,
+  }
+];

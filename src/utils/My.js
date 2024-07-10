@@ -66,6 +66,15 @@ class My {
     const roundedAmount = Math.round(randomAmount * 100) / 100; // Round to 2 decimal places
     return roundedAmount;
   }
+
+
+  static formatToMonetary(value) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  }
 }
 
 

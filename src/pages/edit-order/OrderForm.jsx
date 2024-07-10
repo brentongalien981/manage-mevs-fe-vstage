@@ -1,6 +1,7 @@
 import { Card, Col, Form, Row } from "react-bootstrap";
 import MyDateUtils from "../../utils/MyDateUtils";
 import { orderStatusOptions } from "../orders/ordersData";
+import My from "../../utils/My";
 
 const OrderForm = ({ formFieldsData, order, handleInputChange }) => {
   function getFormFields(side) {
@@ -27,15 +28,7 @@ const OrderForm = ({ formFieldsData, order, handleInputChange }) => {
       const field = formFieldsData[i];
 
       // Set the fieldValue.
-      let fieldValue = order[field.dbPropName];
-      if (
-        field.dbPropName === "createdAt" ||
-        field.dbPropName === "updatedAt"
-      ) {
-        fieldValue = MyDateUtils.getDateStringForDate(new Date(fieldValue));
-      } else if (field.dbPropName === "orderStatus") {
-        fieldValue = order.orderStatus?.value;
-      }
+      let fieldValue = formatFieldValue(order, field.dbPropName);
 
       // Set the input.
       formFields.push(
@@ -88,5 +81,27 @@ const OrderForm = ({ formFieldsData, order, handleInputChange }) => {
     </>
   );
 };
+
+function formatFieldValue(order, dbPropName) {
+  let fieldValue = order[dbPropName];
+
+  switch (dbPropName) {
+    case "shippingFee":
+    case "tax":
+      fieldValue = "$" + My.formatToMonetary(fieldValue);
+      break;
+    case "createdAt":
+    case "updatedAt":
+      fieldValue = MyDateUtils.getDateStringForDate(
+        new Date(order[dbPropName])
+      );
+      break;
+    case "orderStatus":
+      fieldValue = fieldValue?.value;
+      break;
+  }
+
+  return fieldValue;
+}
 
 export default OrderForm;

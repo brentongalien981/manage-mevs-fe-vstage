@@ -6,6 +6,8 @@ import { orderFormFieldsData } from "./editOrderData";
 import { myFetch } from "../../utils/myRequestUtils";
 import useFloatingAlerts from "../../hooks/useFloatingAlerts";
 import OrderForm from "./OrderForm";
+import OrderItems from "./OrderItems";
+import "./EditOrder.scss";
 
 const EditOrder = () => {
   const { orderId } = useParams();
@@ -136,8 +138,9 @@ const EditOrder = () => {
     <>
       <Helmet title="Form Layouts" />
       <Container fluid className="p-0">
-        <h1 className="h3 mb-3">Edit Order</h1>
+        <h2 className="mb-3">Edit Order</h2>
         {mainContent}
+        <OrderItems order={order} />
       </Container>
     </>
   );
