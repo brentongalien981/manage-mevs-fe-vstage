@@ -15,6 +15,7 @@ const EditOrder = () => {
   const [order, setOrder] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isBuyingLabel, setIsBuyingLabel] = useState(false);
   const { addAlert } = useFloatingAlerts();
 
   // Fetch order details by orderId.
@@ -106,6 +107,62 @@ const EditOrder = () => {
     });
   }
 
+  async function handleBuyShippingLabel() {
+    // Guard against multiple clicks.
+    if (isBuyingLabel) {
+      return;
+    }
+    setIsBuyingLabel(true);
+
+    // Prepare request body.
+    const reqBody = {
+      orderId: order._id,
+    };
+
+    // Make the request.
+    await myFetch({
+      url: `/orders/buyShippingLabel`,
+      method: "POST",
+      body: reqBody,
+      onSuccess: (data) => {
+        setIsBuyingLabel(false);
+        setOrder(data.updatedOrder);
+        addAlert({
+          message: "Success purchasing of shipping label.",
+          variant: "success",
+        });
+      },
+      onFailure: (errorMessage) => {
+        setIsBuyingLabel(false);
+        addAlert({
+          message: `Purchase of shipping label failed. ${errorMessage}`,
+          variant: "danger",
+        });
+      },
+    });
+  }
+
+  const updateBtn = (
+    <Button variant="primary" onClick={handleUpdate}>
+      {isUpdating ? (
+        <Spinner size="sm" animation="border" variant="light" />
+      ) : (
+        "Update"
+      )}
+    </Button>
+  );
+
+  // TODO: Set the buyShippingLabel btn.
+  const buyShippingLabelBtn = (
+    <Button variant="warning" className="mx-4" onClick={handleBuyShippingLabel}>
+      {isBuyingLabel ? (
+        <Spinner size="sm" animation="border" variant="light" />
+      ) : (
+        "Buy Shipping Label"
+      )}
+    </Button>
+  );
+
   // Set main content.
   let mainContent = (
     <Row>
@@ -115,13 +172,8 @@ const EditOrder = () => {
         handleInputChange={handleInputChange}
       />
       <Col lg="12">
-        <Button variant="primary" type="submit" onClick={handleUpdate}>
-          {isUpdating ? (
-            <Spinner size="sm" animation="border" variant="light" />
-          ) : (
-            "Update"
-          )}
-        </Button>
+        {updateBtn}
+        {buyShippingLabelBtn}
       </Col>
     </Row>
   );

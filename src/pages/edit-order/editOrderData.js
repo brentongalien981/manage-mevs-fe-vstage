@@ -12,6 +12,8 @@ function getOrderFormFieldsData() {
     if (field.name === "street1") {
       data.push({ name: "shippingFee", dbPropName: "shippingFee", type: "text", value: "", isSortable: true, sortOrder: "none", placeholder: "Shipping Fee", isEditable: false });
       data.push({ name: "tax", dbPropName: "tax", type: "text", value: "", isSortable: true, sortOrder: "none", placeholder: "Tax", isEditable: false });
+      data.push({ name: "shipmentLabelUrl", dbPropName: "shipmentLabelUrl", type: "link", value: "", isSortable: false, sortOrder: "none", placeholder: "Shipment Label URL", isEditable: false });
+      data.push({ name: "trackingUrl", dbPropName: "trackingUrl", type: "link", value: "", isSortable: false, sortOrder: "none", placeholder: "Shipment Tracker URL", isEditable: false });
     }
     data.push(field);
   });
