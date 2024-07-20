@@ -7,7 +7,7 @@ import Statistics from "./Statistics";
 import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
-import "./Dashboard.scss";
+import "./dashboard.scss";
 import DashboardProvider from "../../contexts/DashboardProvider";
 import AreaChart from "./AreaChart";
 
